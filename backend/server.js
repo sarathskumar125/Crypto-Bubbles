@@ -1,8 +1,9 @@
 // server.js
 const express = require('express');
-const mongoose = require('mongoose');
+const path = require('path')
 const cors = require('cors');
 const  data  = require('./data');
+
 
 
 const app = express();
@@ -44,6 +45,12 @@ app.post('/api/bubbles', async (req, res) => {
     res.status(500).json({ message: 'Server error' }); 
   }
 });
+
+const _dirname=path.resolve();
+app.use(express.static(path.join(_dirname,'/frontend/build')))
+app.get('*',(req,res)=>{
+  res.sendFile(path.join(_dirname, '/frontend/build/index.html'))
+})
 
 const PORT = process.env.PORT || 5000;
 app.listen(PORT, () => {
